@@ -12,7 +12,7 @@
 
 use std::time::Instant;
 
-use milagro_bls::{PublicKey, SecretKey, Signature};
+use blst::min_pk::{PublicKey, SecretKey};
 use sp1_sdk::{include_elf, ProverClient, SP1Stdin};
 
 /// The ELF (executable and linkable format) file for the Succinct RISC-V zkVM.
@@ -34,32 +34,35 @@ fn main() {
 
     // Load some keys from a serialized secret key.
     let secret_key = SecretKey::from_bytes(&sk_bytes).unwrap();
-    let public_key: PublicKey = PublicKey::from_secret_key(&secret_key);
+    let public_key: PublicKey = secret_key.sk_to_pk();
+
     let message = String::from("bls_test");
-    let sig = Signature::new(message.as_bytes(), &secret_key);
-    // // Setup the inputs.
-    // let mut stdin = SP1Stdin::new();
-    // stdin.write_vec(sk_bytes);
-    // stdin.write(&message);
-
-    // let (pk, _) = client.setup(BLS_SIGN_ELF);
-
-    // let start = Instant::now();
-    // // Generate the proof
-    // let proof = client
-    //     .prove(&pk, &stdin)
-    //     .groth16()
-    //     .run()
-    //     .expect("failed to generate proof");
-
-    // println!("sign time: {}", start.elapsed().as_millis());
-
-    // let sig = proof.public_values.as_slice();
+    // let dst = b"BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_";
+    // let sig = secret_key.sign(message.as_bytes(), dst, &[]);
 
     // Setup the inputs.
     let mut stdin = SP1Stdin::new();
-    stdin.write_slice(&public_key.as_bytes());
-    stdin.write_slice(&sig.as_bytes());
+    stdin.write_vec(sk_bytes);
+    stdin.write(&message);
+
+    let (pk, _) = client.setup(BLS_SIGN_ELF);
+
+    let start = Instant::now();
+    // Generate the proof
+    let proof = client
+        .prove(&pk, &stdin)
+        .groth16()
+        .run()
+        .expect("failed to generate proof");
+
+    println!("sign time: {}", start.elapsed().as_secs());
+
+    let sig = proof.public_values.as_slice();
+
+    // Setup the inputs.
+    let mut stdin = SP1Stdin::new();
+    stdin.write_slice(&public_key.to_bytes());
+    stdin.write_slice(sig);
     stdin.write(&message);
 
     let (pk, _) = client.setup(BLS_VERIFY_ELF);
@@ -71,7 +74,7 @@ fn main() {
         .run()
         .expect("failed to generate proof");
 
-    println!("verify time: {}", start.elapsed().as_millis());
+    println!("verify time: {}", start.elapsed().as_secs());
 
     let verify: bool = proof.public_values.read();
     println!("pub val: {}", proof.public_values.raw());

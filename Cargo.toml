@@ -8,4 +8,5 @@ resolver = "2"
 
 [workspace.dependencies]
 alloy-sol-types = "0.7.7"
-milagro_bls = { git = "https://github.com/Snowfork/milagro_bls", rev = "d3fc0a40cfe8b72ccda46ba050ee6786a59ce753", default-features = false }
+# milagro_bls = { git = "https://github.com/Snowfork/milagro_bls", rev = "d3fc0a40cfe8b72ccda46ba050ee6786a59ce753", default-features = false }
+blst = "0.3.14"

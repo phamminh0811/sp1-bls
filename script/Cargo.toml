@@ -18,7 +18,7 @@ tracing = "0.1.40"
 hex = "0.4.3"
 alloy-sol-types = { workspace = true }
 dotenv = "0.15.0"
-milagro_bls = { workspace =  true }
+blst = { workspace =  true }
 
 [build-dependencies]
 sp1-build = "4.0.0"

@@ -481,11 +481,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "amcl"
-version = "0.3.0"
-source = "git+https://github.com/Snowfork/milagro_bls?rev=d3fc0a40cfe8b72ccda46ba050ee6786a59ce753#d3fc0a40cfe8b72ccda46ba050ee6786a59ce753"
-
-[[package]]
 name = "android-tzdata"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -958,10 +953,10 @@ name = "bls-script"
 version = "0.1.0"
 dependencies = [
  "alloy-sol-types 0.7.7",
+ "blst",
  "clap",
  "dotenv",
  "hex",
- "milagro_bls",
  "serde",
  "serde_json",
  "sp1-build",
@@ -974,7 +969,7 @@ name = "bls-sign"
 version = "0.1.0"
 dependencies = [
  "alloy-sol-types 0.7.7",
- "milagro_bls",
+ "blst",
  "sp1-zkvm",
 ]
 
@@ -983,7 +978,7 @@ name = "bls-verify"
 version = "0.1.0"
 dependencies = [
  "alloy-sol-types 0.7.7",
- "milagro_bls",
+ "blst",
  "sp1-zkvm",
 ]
 
@@ -1002,9 +997,9 @@ dependencies = [
 
 [[package]]
 name = "blst"
-version = "0.3.13"
+version = "0.3.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4378725facc195f1a538864863f6de233b500a8862747e7f165078a419d5e874"
+checksum = "47c79a94619fade3c0b887670333513a67ac28a6a7e653eb260bf0d4103db38d"
 dependencies = [
  "cc",
  "glob",
@@ -2509,16 +2504,6 @@ name = "memuse"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2145869435ace5ea6ea3d35f59be559317ec9a0d04e1812d5f185a87b6d36f1a"
-
-[[package]]
-name = "milagro_bls"
-version = "1.5.1"
-source = "git+https://github.com/Snowfork/milagro_bls?rev=d3fc0a40cfe8b72ccda46ba050ee6786a59ce753#d3fc0a40cfe8b72ccda46ba050ee6786a59ce753"
-dependencies = [
- "amcl",
- "rand",
- "zeroize",
-]
 
 [[package]]
 name = "mime"

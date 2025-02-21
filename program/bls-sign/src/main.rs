@@ -8,7 +8,7 @@
 #![no_main]
 sp1_zkvm::entrypoint!(main);
 
-use milagro_bls::{SecretKey, Signature};
+use blst::min_pk::SecretKey;
 
 pub fn main() {
     // Read an input to the program.
@@ -17,8 +17,9 @@ pub fn main() {
     
     let sk = SecretKey::from_bytes(&sk_bytes).unwrap();
 
-    let signature = Signature::new(msg.as_bytes(), &sk);
+    let dst = b"BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_";
+    let signature = sk.sign(msg.as_bytes(), dst, &[]);
     // Commit to the public values of the program. The final proof will have a commitment to all the
     // bytes that were committed to.
-    sp1_zkvm::io::commit_slice(&signature.as_bytes());
+    sp1_zkvm::io::commit_slice(&signature.to_bytes());
 }

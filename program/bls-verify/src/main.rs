@@ -8,7 +8,7 @@
 #![no_main]
 sp1_zkvm::entrypoint!(main);
 
-use milagro_bls::{PublicKey, Signature};
+use blst::{min_pk::{PublicKey, Signature}, BLST_ERROR};
 
 pub fn main() {
     // Read an input to the program.
@@ -19,7 +19,9 @@ pub fn main() {
     let pk = PublicKey::from_bytes(&pk_bytes).unwrap();
     let sig = Signature::from_bytes(&sig_bytes).unwrap();
 
-    let verify = sig.verify(msg.as_bytes(), &pk);
+    let dst = b"BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_";
+    let verify = matches!(sig.verify(true, msg.as_bytes(), dst, &[], &pk, true), BLST_ERROR::BLST_SUCCESS);
+
     // Commit to the public values of the program. The final proof will have a commitment to all the
     // bytes that were committed to.
     sp1_zkvm::io::commit(&verify);
