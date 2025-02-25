@@ -8,17 +8,18 @@
 #![no_main]
 sp1_zkvm::entrypoint!(main);
 
-use milagro_bls::{SecretKey, Signature};
+use dusk_bytes::{DeserializableSlice, Serializable};
+use bls12_381_bls::SecretKey;
 
 pub fn main() {
     // Read an input to the program.
     let sk_bytes = sp1_zkvm::io::read_vec();
     let msg: String = sp1_zkvm::io::read();
     
-    let sk = SecretKey::from_bytes(&sk_bytes).unwrap();
+    let sk = SecretKey::from_slice(&sk_bytes).unwrap();
 
-    let signature = Signature::new(msg.as_bytes(), &sk);
+    let signature = sk.sign(msg.as_bytes());
     // Commit to the public values of the program. The final proof will have a commitment to all the
     // bytes that were committed to.
-    sp1_zkvm::io::commit_slice(&signature.as_bytes());
+    sp1_zkvm::io::commit_slice(&signature.to_bytes());
 }

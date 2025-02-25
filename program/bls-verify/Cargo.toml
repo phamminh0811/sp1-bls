@@ -6,4 +6,6 @@ edition = "2021"
 [dependencies]
 alloy-sol-types = { workspace = true }
 sp1-zkvm = "4.0.0"
-milagro_bls = { workspace =  true }
+bls12_381-bls = { workspace =  true }
+dusk-bls12_381 = { workspace = true }
+dusk-bytes = { workspace = true }

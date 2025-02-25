@@ -481,11 +481,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "amcl"
-version = "0.3.0"
-source = "git+https://github.com/Snowfork/milagro_bls?rev=d3fc0a40cfe8b72ccda46ba050ee6786a59ce753#d3fc0a40cfe8b72ccda46ba050ee6786a59ce753"
-
-[[package]]
 name = "android-tzdata"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -958,10 +953,12 @@ name = "bls-script"
 version = "0.1.0"
 dependencies = [
  "alloy-sol-types 0.7.7",
+ "bls12_381-bls",
  "clap",
  "dotenv",
+ "dusk-bls12_381",
+ "dusk-bytes",
  "hex",
- "milagro_bls",
  "serde",
  "serde_json",
  "sp1-build",
@@ -974,7 +971,9 @@ name = "bls-sign"
 version = "0.1.0"
 dependencies = [
  "alloy-sol-types 0.7.7",
- "milagro_bls",
+ "bls12_381-bls",
+ "dusk-bls12_381",
+ "dusk-bytes",
  "sp1-zkvm",
 ]
 
@@ -983,7 +982,9 @@ name = "bls-verify"
 version = "0.1.0"
 dependencies = [
  "alloy-sol-types 0.7.7",
- "milagro_bls",
+ "bls12_381-bls",
+ "dusk-bls12_381",
+ "dusk-bytes",
  "sp1-zkvm",
 ]
 
@@ -995,9 +996,22 @@ checksum = "a3c196a77437e7cc2fb515ce413a6401291578b5afc8ecb29a3c7ab957f05941"
 dependencies = [
  "ff 0.12.1",
  "group 0.12.1",
- "pairing",
+ "pairing 0.22.0",
  "rand_core",
  "subtle",
+]
+
+[[package]]
+name = "bls12_381-bls"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9b53eb2c00ecaf0635c278ed7701386a6e83e9b578181ee248ed52f339957b9c"
+dependencies = [
+ "dusk-bls12_381",
+ "dusk-bytes",
+ "ff 0.13.0",
+ "rand_core",
+ "zeroize",
 ]
 
 [[package]]
@@ -1462,6 +1476,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "derive-hex"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4b6618553c32cd1c1f4fbdb9418cc035f3168422f24406ebb08576f6db5ed6ec"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "derive_more"
 version = "0.99.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1568,6 +1593,31 @@ name = "dunce"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813"
+
+[[package]]
+name = "dusk-bls12_381"
+version = "0.14.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "633aa835dd9e4db7ad5dc94a3f95d44ff5c6856ec3c83c15eb75366cfb5ee68a"
+dependencies = [
+ "blake2b_simd",
+ "dusk-bytes",
+ "ff 0.13.0",
+ "group 0.13.0",
+ "pairing 0.23.0",
+ "rand_core",
+ "subtle",
+ "zeroize",
+]
+
+[[package]]
+name = "dusk-bytes"
+version = "0.1.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d5d209b92f0741edf1d99369bd4c1a1ef2fd0a85e885220f9e3fb0df3c61337f"
+dependencies = [
+ "derive-hex",
+]
 
 [[package]]
 name = "ecdsa"
@@ -2511,16 +2561,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2145869435ace5ea6ea3d35f59be559317ec9a0d04e1812d5f185a87b6d36f1a"
 
 [[package]]
-name = "milagro_bls"
-version = "1.5.1"
-source = "git+https://github.com/Snowfork/milagro_bls?rev=d3fc0a40cfe8b72ccda46ba050ee6786a59ce753#d3fc0a40cfe8b72ccda46ba050ee6786a59ce753"
-dependencies = [
- "amcl",
- "rand",
- "zeroize",
-]
-
-[[package]]
 name = "mime"
 version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3063,6 +3103,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "135590d8bdba2b31346f9cd1fb2a912329f5135e832a4f422942eb6ead8b6b3b"
 dependencies = [
  "group 0.12.1",
+]
+
+[[package]]
+name = "pairing"
+version = "0.23.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "81fec4625e73cf41ef4bb6846cafa6d44736525f442ba45e407c4a000a13996f"
+dependencies = [
+ "group 0.13.0",
 ]
 
 [[package]]
