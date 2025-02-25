@@ -38,29 +38,30 @@ fn main() {
     let public_key = PublicKey::from(&secret_key);
     let message = String::from("bls_test");
 
-    // Setup the inputs.
-    let mut stdin = SP1Stdin::new();
-    stdin.write_vec(Vec::from(sk_bytes));
-    stdin.write(&message);
+    // // Setup the inputs.
+    // let mut stdin = SP1Stdin::new();
+    // stdin.write_vec(Vec::from(sk_bytes));
+    // stdin.write(&message);
 
-    let (pk, _) = client.setup(BLS_SIGN_ELF);
+    // let (pk, _) = client.setup(BLS_SIGN_ELF);
 
-    let start = Instant::now();
-    // Generate the proof
-    let proof = client
-        .prove(&pk, &stdin)
-        .groth16()
-        .run()
-        .expect("failed to generate proof");
+    // let start = Instant::now();
+    // // Generate the proof
+    // let proof = client
+    //     .prove(&pk, &stdin)
+    //     .groth16()
+    //     .run()
+    //     .expect("failed to generate proof");
 
-    println!("sign time: {}", start.elapsed().as_millis());
+    // println!("sign time: {}", start.elapsed().as_millis());
 
-    let sig = proof.public_values.as_slice();
+    // let sig = proof.public_values.as_slice();
 
+    let sig = secret_key.sign(message.as_bytes());
     // Setup the inputs.
     let mut stdin = SP1Stdin::new();
     stdin.write_slice(&public_key.to_bytes());
-    stdin.write_slice(sig);
+    stdin.write_slice(&sig.to_bytes());
     stdin.write(&message);
 
     let (pk, _) = client.setup(BLS_VERIFY_ELF);
